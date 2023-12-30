@@ -6,13 +6,13 @@ class MapTypeFrame(ctk.CTkFrame):
         super().__init__(master, **kwargs)
 
         zoom_slider = ctk.CTkSlider(self, from_=0, to=20, command=self.slide_zoom)
-        zoom_slider.pack()
+        zoom_slider.pack(pady=10)
 
         option_menu = ctk.CTkOptionMenu(self, values=["OpenStreetMap", "Google normal", "Google satellite"],
                                         command=self.option_menu_callback)
         option_menu.set("OpenStreetMap")
 
-        option_menu.pack()
+        option_menu.pack(pady=10)
 
     def option_menu_callback(self, choice):
         if choice == "OpenStreetMap":
@@ -39,21 +39,35 @@ class SearchFrame(ctk.CTkFrame):
         self.search_button = ctk.CTkButton(self, text="Search", command=self.button_event)
 
         self.Latitude_text.grid(row=0, column=0)
-        self.Longitude_text.grid(row=0, column=1)
+        self.Longitude_text.grid(row=2, column=0)
 
         self.Latitude_entry.grid(row=1, column=0, pady=10, padx=10)
-        self.Longitude_entry.grid(row=1, column=1, pady=10, padx=10)
-        self.search_button.grid(row=2, column=0, pady=10, padx=10, columnspan=2)
+        self.Longitude_entry.grid(row=3, column=0, pady=10, padx=10)
+        self.search_button.grid(row=4, column=0, pady=10, padx=10)
 
     def button_event(self):
         try:
-            Latitude = self.Latitude_entry.get()
-            Longitude = self.Longitude_entry.get()
-            self.master.master.map_frame.map_widget.set_position(float(Latitude), float(Longitude))
+            latitude = self.Latitude_entry.get()
+            longitude = self.Longitude_entry.get()
+            self.master.master.map_frame.map_widget.set_position(float(latitude), float(longitude))
         except ValueError:
-            Latitude = 33.0724127
-            Longitude = 35.3335531
-            self.master.master.map_frame.map_widget.set_position(float(Latitude), float(Longitude))
+            latitude = 33.0724127
+            longitude = 35.3335531
+            self.master.master.map_frame.map_widget.set_position(float(latitude), float(longitude))
+
+
+class MarkersFrame(ctk.CTkFrame):
+    def __init__(self, master, **kwargs):
+        super().__init__(master, **kwargs)
+        self.marker = False
+        self.add_marker_button = ctk.CTkButton(self, text="Add Marker", command=self.toggle_marker_button)
+        self.add_marker_button.pack(pady=5, padx=5, anchor=ctk.CENTER)
+
+    def toggle_marker_button(self):
+        self.left_click_handler = self.master.master.map_frame.map_widget.add_left_click_map_command(
+            self.master.master.map_frame.add_marker)
+        self.marker = True
+        self.add_marker_button.configure(text="stopMarker")
 
 
 class OptionsFrame(ctk.CTkFrame):
@@ -61,7 +75,10 @@ class OptionsFrame(ctk.CTkFrame):
         super().__init__(master, **kwargs)
 
         self.search_frame = SearchFrame(self)
-        self.search_frame.grid(row=0, column=0, pady=10, padx=10)
+        self.search_frame.grid(row=0, column=0, pady=10, padx=10, sticky="nsew")
 
         self.map_type_frame = MapTypeFrame(self)
-        self.map_type_frame.grid(row=1, column=0, pady=10, padx=10)
+        self.map_type_frame.grid(row=1, column=0, pady=10, padx=10, sticky="nsew")
+
+        self.markers_frame = MarkersFrame(self)
+        self.markers_frame.grid(row=2, column=0, pady=10, padx=10, sticky="nsew")

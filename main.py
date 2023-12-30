@@ -16,7 +16,7 @@ class App(ctk.CTk):
         self.options_frame = optioinsFrame.OptionsFrame(self, width=260, height=590)
         self.options_frame.grid(row=0, column=0, pady=10, padx=10, sticky="nsew")
 
-        self.map_frame = mapFrame.MapFrame(self, width=620, height=590)
+        self.map_frame = mapFrame.MapFrame(self, width=730, height=590)
         self.map_frame.grid(row=0, column=1, pady=10, padx=10, sticky="nsew")
 
 
