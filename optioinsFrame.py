@@ -5,7 +5,7 @@ class MapTypeFrame(ctk.CTkFrame):
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
 
-        zoom_slider = ctk.CTkSlider(self, from_=0, to=20, command=self.slide_zoom)
+        zoom_slider = ctk.CTkSlider(self, from_=0, to=19, command=self.slide_zoom)
         zoom_slider.pack(pady=10)
 
         option_menu = ctk.CTkOptionMenu(self, values=["OpenStreetMap", "Google normal", "Google satellite"],
@@ -59,15 +59,16 @@ class SearchFrame(ctk.CTkFrame):
 class MarkersFrame(ctk.CTkFrame):
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
-        self.marker = False
         self.add_marker_button = ctk.CTkButton(self, text="Add Marker", command=self.toggle_marker_button)
         self.add_marker_button.pack(pady=5, padx=5, anchor=ctk.CENTER)
 
     def toggle_marker_button(self):
-        self.left_click_handler = self.master.master.map_frame.map_widget.add_left_click_map_command(
-            self.master.master.map_frame.add_marker)
-        self.marker = True
-        self.add_marker_button.configure(text="stopMarker")
+        self.master.master.map_frame.map_widget.add_left_click_map_command(self.master.master.map_frame.add_marker)
+        self.add_marker_button.configure(text="stopMarker", command=self.stop_add)
+
+    def stop_add(self):
+        self.add_marker_button.configure(text="Add Marker", command=self.toggle_marker_button)
+        self.master.master.map_frame.map_widget.add_left_click_map_command(self.master.master.map_frame.do_nothing)
 
 
 class OptionsFrame(ctk.CTkFrame):
