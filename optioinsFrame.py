@@ -61,14 +61,18 @@ class MarkersFrame(ctk.CTkFrame):
         super().__init__(master, **kwargs)
         self.add_marker_button = ctk.CTkButton(self, text="Add Marker", command=self.toggle_marker_button)
         self.add_marker_button.pack(pady=5, padx=5, anchor=ctk.CENTER)
+        self.marker_text = ctk.CTkEntry(self, placeholder_text="")
+        self.marker_text.pack(pady=5, padx=5, anchor=ctk.CENTER)
 
     def toggle_marker_button(self):
-        self.master.master.map_frame.map_widget.add_left_click_map_command(self.master.master.map_frame.add_marker)
+        self.master.master.master.master.map_frame.map_widget.add_left_click_map_command(
+            self.master.master.master.master.map_frame.add_marker)
         self.add_marker_button.configure(text="stopMarker", command=self.stop_add)
 
     def stop_add(self):
         self.add_marker_button.configure(text="Add Marker", command=self.toggle_marker_button)
-        self.master.master.map_frame.map_widget.add_left_click_map_command(self.master.master.map_frame.do_nothing)
+        self.master.master.master.master.map_frame.map_widget.add_left_click_map_command(
+            self.master.master.master.master.map_frame.do_nothing)
 
 
 class OptionsFrame(ctk.CTkFrame):
@@ -81,5 +85,11 @@ class OptionsFrame(ctk.CTkFrame):
         self.map_type_frame = MapTypeFrame(self)
         self.map_type_frame.grid(row=1, column=0, pady=10, padx=10, sticky="nsew")
 
-        self.markers_frame = MarkersFrame(self)
-        self.markers_frame.grid(row=2, column=0, pady=10, padx=10, sticky="nsew")
+        self.label_tabs = ctk.CTkTabview(self, width=100)
+        self.label_tabs.add("Markers")
+        self.label_tabs.add("Polygons")
+
+        self.label_tabs.grid(row=2, column=0, pady=10, padx=10, sticky="nsew")
+
+        self.markers_frame = MarkersFrame(master=self.label_tabs.tab("Markers"))
+        self.markers_frame.grid(row=0, column=0, pady=10, padx=10, sticky="nsew")

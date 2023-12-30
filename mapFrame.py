@@ -23,7 +23,8 @@ class MapFrame(ctk.CTkFrame):
                                             max_zoom=22)
 
     def add_marker(self, coords):
-        self.new_marker = self.map_widget.set_marker(coords[0], coords[1], text="", )
+        self.text = self.master.options_frame.markers_frame.marker_text.get()
+        self.new_marker = self.map_widget.set_marker(coords[0], coords[1], text=self.text )
 
     def do_nothing(self, coords):
         print(coords)
