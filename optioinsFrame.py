@@ -80,11 +80,15 @@ class MarkersFrame(ctk.CTkFrame):
         self.marker_icon_button = ctk.CTkButton(self.icon_frame, text="", width=50, height=50,
                                                 image=assets.marker_image_ctk,
                                                 command=lambda: self.icon_select("marker"))
-        self.marker_icon_button.pack()
+        self.marker_icon_button.grid(row=0, column=0, pady=5, padx=5)
         self.soldier_icon_button = ctk.CTkButton(self.icon_frame, text="", width=50, height=50,
                                                  image=assets.soldier_black_image_ctk,
                                                  command=lambda: self.icon_select("soldier"))
-        self.soldier_icon_button.pack()
+        self.soldier_icon_button.grid(row=0, column=1, pady=5, padx=5)
+        self.tank_icon_button = ctk.CTkButton(self.icon_frame, text="", width=50, height=50,
+                                                 image=assets.tank_black_image_ctk,
+                                                 command=lambda: self.icon_select("tank"))
+        self.tank_icon_button.grid(row=1, column=0, pady=5, padx=5)
 
         # colors
         self.black_button = ctk.CTkButton(self.color_frame, text="", width=25, height=25,

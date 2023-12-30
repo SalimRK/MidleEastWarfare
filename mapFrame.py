@@ -44,6 +44,19 @@ class MapFrame(ctk.CTkFrame):
                 tk_icon = ImageTk.PhotoImage(assets.soldier_red_image)
             elif color == "yellow":
                 tk_icon = ImageTk.PhotoImage(assets.soldier_yellow_image)
+        elif icon == "tank":
+            if color == "black":
+                tk_icon = ImageTk.PhotoImage(assets.tank_black_image)
+            elif color == "white":
+                tk_icon = ImageTk.PhotoImage(assets.tank_white_image)
+            elif color == "blue":
+                tk_icon = ImageTk.PhotoImage(assets.tank_blue_image)
+            elif color == "green":
+                tk_icon = ImageTk.PhotoImage(assets.tank_green_image)
+            elif color == "red":
+                tk_icon = ImageTk.PhotoImage(assets.tank_red_image)
+            elif color == "yellow":
+                tk_icon = ImageTk.PhotoImage(assets.tank_yellow_image)
         elif icon == "marker":
             tk_icon = None
 
@@ -51,6 +64,7 @@ class MapFrame(ctk.CTkFrame):
         self.new_marker = self.map_widget.set_marker(coords[0], coords[1], text=self.text,
                                                      marker_color_outside=color,
                                                      marker_color_circle=None,
+                                                     text_color = color,
                                                      icon=tk_icon
                                                      )
 
