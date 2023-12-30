@@ -6,7 +6,7 @@ class MapFrame(ctk.CTkFrame):
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
 
-        self.map_widget = tkintermapview.TkinterMapView(self, width=730, height=590, corner_radius=10)
+        self.map_widget = tkintermapview.TkinterMapView(self, width=730, height=690, corner_radius=10)
         self.map_widget.place(relx=0.5, rely=0.5, anchor=ctk.CENTER)
         self.map_widget.set_tile_server("https://a.tile.openstreetmap.org/{z}/{x}/{y}.png")  # OpenStreetMap (default)
         self.map_widget.set_position(33.0724127, 35.3335531)
