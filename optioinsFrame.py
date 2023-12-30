@@ -1,4 +1,5 @@
 import customtkinter as ctk
+import assets
 
 
 class MapTypeFrame(ctk.CTkFrame):
@@ -59,10 +60,69 @@ class SearchFrame(ctk.CTkFrame):
 class MarkersFrame(ctk.CTkFrame):
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
+
+        self.selected_icon = "marker"
+        self.selected_color = "red"
+
         self.add_marker_button = ctk.CTkButton(self, text="Add Marker", command=self.toggle_marker_button)
         self.add_marker_button.pack(pady=5, padx=5, anchor=ctk.CENTER)
+
         self.marker_text = ctk.CTkEntry(self, placeholder_text="")
         self.marker_text.pack(pady=5, padx=5, anchor=ctk.CENTER)
+
+        self.color_frame = ctk.CTkFrame(self)
+        self.color_frame.pack(pady=5, padx=5, anchor=ctk.CENTER)
+
+        self.icon_frame = ctk.CTkFrame(self)
+        self.icon_frame.pack(pady=5, padx=5, anchor=ctk.CENTER)
+
+        # icons
+        self.marker_icon_button = ctk.CTkButton(self.icon_frame, text="", width=50, height=50,
+                                                image=assets.marker_image_ctk,
+                                                command=lambda: self.icon_select("marker"))
+        self.marker_icon_button.pack()
+        self.soldier_icon_button = ctk.CTkButton(self.icon_frame, text="", width=50, height=50,
+                                                 image=assets.soldier_black_image_ctk,
+                                                 command=lambda: self.icon_select("soldier"))
+        self.soldier_icon_button.pack()
+
+        # colors
+        self.black_button = ctk.CTkButton(self.color_frame, text="", width=25, height=25,
+                                          fg_color="black",
+                                          command=lambda: self.color_select("black"))
+        self.black_button.grid(row=0, column=0)
+
+        self.white_button = ctk.CTkButton(self.color_frame, text="", width=25, height=25,
+                                          fg_color="white",
+                                          command=lambda: self.color_select("white"))
+        self.white_button.grid(row=0, column=1)
+
+        self.blue_button = ctk.CTkButton(self.color_frame, text="", width=25, height=25,
+                                         fg_color="blue",
+                                         command=lambda: self.color_select("blue"))
+        self.blue_button.grid(row=0, column=2)
+        self.green_button = ctk.CTkButton(self.color_frame, text="", width=25, height=25,
+                                          fg_color="green",
+                                          command=lambda: self.color_select("green"))
+        self.green_button.grid(row=0, column=3)
+
+        self.red_button = ctk.CTkButton(self.color_frame, text="", width=25, height=25,
+                                        fg_color="red",
+                                        command=lambda: self.color_select("red"))
+        self.red_button.grid(row=0, column=4)
+
+        self.yellow_button = ctk.CTkButton(self.color_frame, text="", width=25, height=25,
+                                           fg_color="yellow",
+                                           command=lambda: self.color_select("yellow"))
+        self.yellow_button.grid(row=0, column=5)
+
+    def icon_select(self, icon):
+        self.selected_icon = icon
+        print("icon selected: " + self.selected_icon)
+
+    def color_select(self, color):
+        self.selected_color = color
+        print("color selected: " + self.selected_color)
 
     def toggle_marker_button(self):
         self.master.master.master.master.map_frame.map_widget.add_left_click_map_command(

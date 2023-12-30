@@ -1,5 +1,7 @@
 import customtkinter as ctk
 import tkintermapview
+import assets
+from PIL import ImageTk
 
 
 class MapFrame(ctk.CTkFrame):
@@ -12,6 +14,8 @@ class MapFrame(ctk.CTkFrame):
         self.map_widget.set_position(33.0724127, 35.3335531)
         self.map_widget.set_zoom(10)
 
+        self.map_widget.add_left_click_map_command(self.do_nothing)
+
     def change_map(self, new_map: str):
         if new_map == "OpenStreetMap":
             self.map_widget.set_tile_server("https://a.tile.openstreetmap.org/{z}/{x}/{y}.png")
@@ -23,9 +27,32 @@ class MapFrame(ctk.CTkFrame):
                                             max_zoom=22)
 
     def add_marker(self, coords):
+
+        icon = self.master.options_frame.markers_frame.selected_icon
+        color = self.master.options_frame.markers_frame.selected_color
+        tk_icon = None
+        if icon == "soldier":
+            if color == "black":
+                tk_icon = ImageTk.PhotoImage(assets.soldier_black_image)
+            elif color == "white":
+                tk_icon = ImageTk.PhotoImage(assets.soldier_white_image)
+            elif color == "blue":
+                tk_icon = ImageTk.PhotoImage(assets.soldier_blue_image)
+            elif color == "green":
+                tk_icon = ImageTk.PhotoImage(assets.soldier_green_image)
+            elif color == "red":
+                tk_icon = ImageTk.PhotoImage(assets.soldier_red_image)
+            elif color == "yellow":
+                tk_icon = ImageTk.PhotoImage(assets.soldier_yellow_image)
+        elif icon == "marker":
+            tk_icon = None
+
         self.text = self.master.options_frame.markers_frame.marker_text.get()
-        self.new_marker = self.map_widget.set_marker(coords[0], coords[1], text=self.text )
+        self.new_marker = self.map_widget.set_marker(coords[0], coords[1], text=self.text,
+                                                     marker_color_outside=color,
+                                                     marker_color_circle=None,
+                                                     icon=tk_icon
+                                                     )
 
     def do_nothing(self, coords):
         print(coords)
-
