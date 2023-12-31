@@ -86,8 +86,8 @@ class MarkersFrame(ctk.CTkFrame):
                                                  command=lambda: self.icon_select("soldier"))
         self.soldier_icon_button.grid(row=0, column=1, pady=5, padx=5)
         self.tank_icon_button = ctk.CTkButton(self.icon_frame, text="", width=50, height=50,
-                                                 image=assets.tank_black_image_ctk,
-                                                 command=lambda: self.icon_select("tank"))
+                                              image=assets.tank_black_image_ctk,
+                                              command=lambda: self.icon_select("tank"))
         self.tank_icon_button.grid(row=1, column=0, pady=5, padx=5)
 
         # colors
@@ -139,6 +139,97 @@ class MarkersFrame(ctk.CTkFrame):
             self.master.master.master.master.map_frame.do_nothing)
 
 
+class PolygonsFrame(ctk.CTkFrame):
+    def __init__(self, master, **kwargs):
+        super().__init__(master, **kwargs)
+
+        self.polygon_coords = []
+        self.selected_color = "red"
+
+        self.add_polygon_button = ctk.CTkButton(self, text="Add Polygon", command=self.toggle_polygon_button)
+        self.add_polygon_button.pack(pady=5, padx=5, anchor=ctk.CENTER)
+
+        self.color_frame = ctk.CTkFrame(self)
+        self.color_frame.pack(pady=5, padx=5, anchor=ctk.CENTER)
+
+        # colors
+        self.black_button = ctk.CTkButton(self.color_frame, text="", width=25, height=25,
+                                          fg_color="black",
+                                          command=lambda: self.color_select("black"))
+        self.black_button.grid(row=0, column=0)
+
+        self.white_button = ctk.CTkButton(self.color_frame, text="", width=25, height=25,
+                                          fg_color="white",
+                                          command=lambda: self.color_select("white"))
+        self.white_button.grid(row=0, column=1)
+
+        self.blue_button = ctk.CTkButton(self.color_frame, text="", width=25, height=25,
+                                         fg_color="blue",
+                                         command=lambda: self.color_select("blue"))
+        self.blue_button.grid(row=0, column=2)
+        self.green_button = ctk.CTkButton(self.color_frame, text="", width=25, height=25,
+                                          fg_color="green",
+                                          command=lambda: self.color_select("green"))
+        self.green_button.grid(row=0, column=3)
+
+        self.red_button = ctk.CTkButton(self.color_frame, text="", width=25, height=25,
+                                        fg_color="red",
+                                        command=lambda: self.color_select("red"))
+        self.red_button.grid(row=0, column=4)
+
+        self.yellow_button = ctk.CTkButton(self.color_frame, text="", width=25, height=25,
+                                           fg_color="yellow",
+                                           command=lambda: self.color_select("yellow"))
+        self.yellow_button.grid(row=0, column=5)
+
+    def toggle_polygon_button(self):
+        # Toggle the left-click event to either add or stop adding polygon coordinates
+        if self.add_polygon_button.cget("text") == "Add Polygon":
+            self.master.master.master.master.map_frame.map_widget.add_left_click_map_command(
+                self.add_polygon_coord)
+            self.add_polygon_button.configure(text="Stop Adding", command=self.stop_add_polygon)
+        else:
+            self.stop_add_polygon()  # Stop adding polygon coordinates when "Stop Adding" is clicked
+
+    def add_polygon_coord(self, coords):
+        # Add the clicked coordinates to the list
+        self.polygon_coords.append((coords[0], coords[1]))
+
+    def stop_add_polygon(self):
+        # Stop adding polygon coordinates
+        self.master.master.master.master.map_frame.map_widget.add_left_click_map_command(
+            self.master.master.master.master.map_frame.do_nothing)
+        self.create_polygon()
+        self.add_polygon_button.configure(text="Add Polygon", command=self.toggle_polygon_button)
+
+    def create_polygon(self):
+        # Create a polygon on MapFrame using stored coordinates and selected color
+        self.master.master.master.master.map_frame.add_polygon(self.polygon_coords, self.selected_color,)
+
+        # Clear the stored coordinates for the next polygon
+        self.polygon_coords = []
+
+    def color_select(self, color):
+        self.selected_color = color
+        print("Polygon color selected: " + self.selected_color)
+
+class ResetFrame(ctk.CTkFrame):
+    def __init__(self, master, **kwargs):
+        super().__init__(master, **kwargs)
+
+        self.reset_marker_button = ctk.CTkButton(self, text="reset marker", command=self.reset_marker_click)
+        self.reset_marker_button.pack(pady=5, padx=5, anchor=ctk.CENTER)
+
+        self.reset_polygon_button = ctk.CTkButton(self, text="reset_polygon", command=self.reset_polygon_click)
+        self.reset_polygon_button.pack(pady=5, padx=5, anchor=ctk.CENTER)
+
+    def reset_marker_click(self):
+        pass
+
+    def reset_polygon_click(self):
+        pass
+
+
 class OptionsFrame(ctk.CTkFrame):
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
@@ -152,8 +243,15 @@ class OptionsFrame(ctk.CTkFrame):
         self.label_tabs = ctk.CTkTabview(self, width=100)
         self.label_tabs.add("Markers")
         self.label_tabs.add("Polygons")
+        self.label_tabs.add("Reset")
 
         self.label_tabs.grid(row=2, column=0, pady=10, padx=10, sticky="nsew")
 
         self.markers_frame = MarkersFrame(master=self.label_tabs.tab("Markers"))
         self.markers_frame.grid(row=0, column=0, pady=10, padx=10, sticky="nsew")
+
+        self.polygons_frame = PolygonsFrame(master=self.label_tabs.tab("Polygons"))
+        self.polygons_frame.grid(row=0, column=0, pady=10, padx=10, sticky="nsew")
+
+        self.reset_frame = ResetFrame(master=self.label_tabs.tab("Reset"))
+        self.reset_frame.grid(row=0, column=0, pady=10, padx=10, sticky="nsew")

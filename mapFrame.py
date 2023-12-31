@@ -64,9 +64,18 @@ class MapFrame(ctk.CTkFrame):
         self.new_marker = self.map_widget.set_marker(coords[0], coords[1], text=self.text,
                                                      marker_color_outside=color,
                                                      marker_color_circle=None,
-                                                     text_color = color,
+                                                     text_color=color,
                                                      icon=tk_icon
                                                      )
 
     def do_nothing(self, coords):
         print(coords)
+
+    def add_polygon(self, coords, color):
+        self.polygon = self.map_widget.set_polygon(coords, fill_color=color, outline_color=color)
+
+    def reset_polygon(self):
+        self.map_widget.delete_all_polygon()
+
+    def reset_marker(self):
+        self.map_widget.delete_all_marker()
