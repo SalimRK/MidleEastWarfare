@@ -224,10 +224,10 @@ class ResetFrame(ctk.CTkFrame):
         self.reset_polygon_button.pack(pady=5, padx=5, anchor=ctk.CENTER)
 
     def reset_marker_click(self):
-        pass
+        self.master.master.master.master.map_frame.reset_marker()
 
     def reset_polygon_click(self):
-        pass
+        self.master.master.master.master.map_frame.reset_polygon()
 
 
 class OptionsFrame(ctk.CTkFrame):
